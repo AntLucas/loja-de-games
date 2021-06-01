@@ -24,8 +24,8 @@ public class Produto {
 	@NotNull
 	private String titulo;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "categoria_id")
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JsonIgnoreProperties("produtos")
 	private Categoria categoria;
 

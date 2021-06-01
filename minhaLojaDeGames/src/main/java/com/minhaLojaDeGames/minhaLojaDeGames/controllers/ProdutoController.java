@@ -3,6 +3,8 @@ package com.minhaLojaDeGames.minhaLojaDeGames.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,34 +52,35 @@ public class ProdutoController {
 	public ResponseEntity<Produto> findByDescricaoTitulo (@PathVariable String titulo){
 		
 		return repository.findByTitulo(titulo)
-				.map(retorno -> ResponseEntity.status(200).body(retorno))
-				.orElse(ResponseEntity.status(404).build()));
+				.map(retorno -> {
+				return ResponseEntity.status(200).body(retorno);
+				} )
+				.orElse(ResponseEntity.status(404).build());
 	}
 	
 	@PostMapping("/cadastrar/{idCategoria}")
-	public ResponseEntity<Produto> postProduto (@PathVariable (value = "idCategoria") Long idCategoria, @RequestBody Produto novoProduto){
+	public ResponseEntity<Produto> postProduto (@PathVariable (value = "idCategoria") Long idCategoria,@Valid @RequestBody Produto novoProduto){
 		return servicec.cadastrarProduto(idCategoria, novoProduto)
 				.map(cadastrado -> ResponseEntity.status(201).body(cadastrado))
 				.orElse(ResponseEntity.status(400).build());
 	}
 	
 	@PutMapping("/atualizar/{idProduto}")
-	public ResponseEntity<Produto> putProduto (@PathVariable (value = "idProduto") Long idProduto, @RequestBody Produto dadosProduto){
+	public ResponseEntity<Produto> putProduto (@PathVariable (value = "idProduto") Long idProduto,@Valid @RequestBody Produto dadosProduto){
 		return servicep.atualizarProduto(idProduto, dadosProduto)
 				.map(dadosAtualizados -> ResponseEntity.status(201).body(dadosAtualizados))
 				.orElse(ResponseEntity.status(400).build());
 	}
 	
 	@DeleteMapping("/deletar/{id}")
-	public ResponseEntity<Produto> deleteProduto(@PathVariable long id) {
+	public ResponseEntity<Object> deleteProduto(@PathVariable long id){
 		Optional<Produto> produtoExistente = repository.findById(id);
 		
 		if(produtoExistente.isPresent()) {
 			repository.deleteById(id);
-			return ResponseEntity.status(200).body(null);
-		}
-		else {
-			return ResponseEntity.status(400).body(null);
+			return ResponseEntity.status(200).body("Produto deletado com sucesso!");
+		} else {
+			return ResponseEntity.status(400).body("O produto não existe.");
 		}
 	}
 	

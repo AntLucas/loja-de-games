@@ -3,6 +3,8 @@ package com.minhaLojaDeGames.minhaLojaDeGames.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,14 +50,14 @@ public class CategoriaController {
 	}
 	
 	@PostMapping("/cadastrar")
-	public ResponseEntity<Categoria> postCategoria (@RequestBody Categoria novaCategoria){
+	public ResponseEntity<Categoria> postCategoria (@Valid @RequestBody Categoria novaCategoria){
 		return service.cadastrarPostagem(novaCategoria)
 				.map(categoriaCadastrada -> ResponseEntity.status(201).body(categoriaCadastrada))
 				.orElse(ResponseEntity.status(400).build());
 	}
 	
 	@PutMapping("/atualizar/{id}")
-	public ResponseEntity<Categoria> putCategoria (@PathVariable (value = "id") Long id ,@RequestBody Categoria dadosNovos){
+	public ResponseEntity<Categoria> putCategoria (@Valid @PathVariable (value = "id") Long id ,@RequestBody Categoria dadosNovos){
 		return service.atualizarCategoria(id, dadosNovos)
 				.map(categoriaAtualizada -> ResponseEntity.status(201).body(categoriaAtualizada))
 				.orElse(ResponseEntity.status(400).build());
