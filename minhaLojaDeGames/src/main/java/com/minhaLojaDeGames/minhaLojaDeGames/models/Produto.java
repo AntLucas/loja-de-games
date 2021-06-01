@@ -1,6 +1,5 @@
 package com.minhaLojaDeGames.minhaLojaDeGames.models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,6 +25,7 @@ public class Produto {
 	
 
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "produtos")
 	@JsonIgnoreProperties("produtos")
 	private Categoria categoria;
 
@@ -52,7 +52,5 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-	
-	
 
 }
